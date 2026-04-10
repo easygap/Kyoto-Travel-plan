@@ -173,26 +173,26 @@
     letter-spacing: .5px;
   }
 
-  /* ── 동선 요약 ── */
-  .route-summary {
-    margin-top: .6rem;
+  /* ── 동선도 ── */
+  .route-map {
+    margin-top: .8rem;
     margin-bottom: 2.8rem;
-    padding: 1rem 1.2rem;
-    background: #f8f8f7;
-    font-size: .8rem;
-    line-height: 1.9;
-    color: #555;
   }
-  .route-summary strong {
-    color: #1a1a1a;
+  .route-map .rm-label {
+    font-size: .76rem;
     font-weight: 600;
+    color: #999;
+    margin-bottom: .5rem;
   }
-  .route-summary .rs-label {
-    font-weight: 700;
-    color: #1a1a1a;
-    font-size: .78rem;
+  .route-map svg {
+    width: 100%;
+    height: auto;
     display: block;
-    margin-bottom: .2rem;
+  }
+  .route-map + .route-map {
+    margin-top: 0;
+    padding-top: .8rem;
+    border-top: 1px solid #eee;
   }
 
   /* ── 비용 합계 ── */
@@ -406,9 +406,48 @@
     </tbody>
   </table>
 
-  <div class="route-summary">
-    <span class="rs-label">동선</span>
-    숙소 → <strong>마이몬 초밥</strong>(지하철 10분) → <strong>GU</strong>(도보 7분) → <strong>이온몰</strong>(도보 10분) → 숙소(도보 또는 택시)
+  <div class="route-map">
+    <div class="rm-label">동선</div>
+    <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
+      <!-- 연결선 -->
+      <line x1="40" y1="32" x2="148" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="192" y1="32" x2="268" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="312" y1="32" x2="388" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="432" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5"/>
+
+      <!-- 이동수단 -->
+      <text x="94" y="24" font-size="9" fill="#aaa" text-anchor="middle">지하철 10분</text>
+      <text x="230" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보 7분</text>
+      <text x="350" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보 10분</text>
+      <text x="485" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보/택시</text>
+
+      <!-- 숙소 (출발) -->
+      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+      <text x="30" y="71" font-size="8" fill="#aaa" text-anchor="middle">사쿠라 테라스</text>
+
+      <!-- 마이몬 초밥 -->
+      <circle cx="170" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="170" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">마이몬 초밥</text>
+      <text x="170" y="71" font-size="8" fill="#aaa" text-anchor="middle">Kyoto Porta</text>
+
+      <!-- GU -->
+      <circle cx="290" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="290" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">GU</text>
+
+      <!-- 이온몰 -->
+      <circle cx="410" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="410" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">이온몰</text>
+      <text x="410" y="71" font-size="8" fill="#aaa" text-anchor="middle">유니클로, 몽벨 등</text>
+
+      <!-- 숙소 (복귀) -->
+      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+
+      <!-- 비용 -->
+      <text x="94" y="92" font-size="9" fill="#888" text-anchor="middle">880엔</text>
+      <text x="485" y="92" font-size="9" fill="#888" text-anchor="middle">~1,000엔</text>
+    </svg>
   </div>
 </div>
 
@@ -514,13 +553,81 @@
     </tbody>
   </table>
 
-  <div class="route-summary">
-    <span class="rs-label">오전 동선</span>
-    숙소 → <strong>기요미즈데라</strong>(택시 20분) → <strong>행자교</strong>(도보 30분) → <strong>식사</strong>(도보 2분) → <strong>돈키호테</strong>(버스 30분) → 숙소
+  <div class="route-map">
+    <div class="rm-label">오전 동선</div>
+    <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
+      <line x1="40" y1="32" x2="108" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="152" y1="32" x2="218" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="262" y1="32" x2="318" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="362" y1="32" x2="438" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="482" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <text x="74" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">택시 20분</text>
+      <text x="185" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 30분</text>
+      <text x="290" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 2분</text>
+      <text x="400" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">버스 30분</text>
+      <text x="510" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">복귀</text>
+
+      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+
+      <circle cx="130" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="130" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">기요미즈</text>
+      <text x="130" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">데라</text>
+
+      <circle cx="240" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="240" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">행자교</text>
+
+      <circle cx="340" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="340" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">우마이</text>
+      <text x="340" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">모노야</text>
+      <text x="340" y="80" font-size="8" fill="#aaa" text-anchor="middle">식사</text>
+
+      <circle cx="460" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="460" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">돈키호테</text>
+
+      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+
+      <text x="74" y="92" font-size="9" fill="#888" text-anchor="middle">2,000엔</text>
+      <text x="400" y="92" font-size="9" fill="#888" text-anchor="middle">920엔</text>
+    </svg>
   </div>
-  <div class="route-summary" style="margin-top: 0; border-top: 1px solid #eee;">
-    <span class="rs-label">저녁 동선</span>
-    숙소 → <strong>니시키 시장</strong>(지하철 20분) → <strong>우나와 본점</strong> → <strong>다이소</strong> → 숙소(지하철 20분)
+  <div class="route-map">
+    <div class="rm-label">저녁 동선</div>
+    <svg viewBox="0 0 580 95" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
+      <line x1="40" y1="32" x2="128" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="172" y1="32" x2="268" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="312" y1="32" x2="398" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="442" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5"/>
+
+      <text x="84" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">지하철 20분</text>
+      <text x="220" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보</text>
+      <text x="355" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보</text>
+      <text x="490" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">지하철 20분</text>
+
+      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+
+      <circle cx="150" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="150" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">니시키</text>
+      <text x="150" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">시장</text>
+
+      <circle cx="290" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="290" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">우나와</text>
+      <text x="290" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">본점</text>
+      <text x="290" y="80" font-size="8" fill="#aaa" text-anchor="middle">장어 덮밥</text>
+
+      <circle cx="420" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="420" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">다이소</text>
+      <text x="420" y="70" font-size="8" fill="#aaa" text-anchor="middle">100엔샵</text>
+
+      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+
+      <text x="84" y="88" font-size="9" fill="#888" text-anchor="middle">880엔</text>
+      <text x="490" y="88" font-size="9" fill="#888" text-anchor="middle">880엔</text>
+    </svg>
   </div>
 </div>
 
@@ -587,9 +694,35 @@
     </tbody>
   </table>
 
-  <div class="route-summary">
-    <span class="rs-label">동선</span>
-    숙소 → <strong>나카우</strong>(도보 10분) → <strong>간사이 공항</strong>(하루카) → <strong>인천</strong>(비행기)
+  <div class="route-map">
+    <div class="rm-label">동선</div>
+    <svg viewBox="0 0 580 90" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
+      <line x1="40" y1="32" x2="148" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="192" y1="32" x2="328" y2="32" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="372" y1="32" x2="508" y2="32" stroke="#ccc" stroke-width="1.5"/>
+
+      <text x="94" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 10분</text>
+      <text x="260" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">하루카 열차</text>
+      <text x="440" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">비행기</text>
+
+      <!-- 숙소 -->
+      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
+      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
+      <text x="30" y="71" font-size="8" fill="#aaa" text-anchor="middle">체크아웃</text>
+
+      <!-- 나카우 -->
+      <circle cx="170" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="170" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">나카우</text>
+      <text x="170" y="70" font-size="8" fill="#aaa" text-anchor="middle">가성비 밥집</text>
+
+      <!-- 간사이 공항 -->
+      <circle cx="350" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <text x="350" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">간사이 공항</text>
+
+      <!-- 인천 -->
+      <circle cx="530" cy="32" r="6" fill="#1a1a1a"/>
+      <text x="530" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">인천</text>
+    </svg>
   </div>
 </div>
 
