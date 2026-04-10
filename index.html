@@ -8,238 +8,217 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Noto Serif KR', Georgia, 'Malgun Gothic', serif;
-    color: #1a1a1a;
-    line-height: 1.85;
-    background: #fff;
+    font-family: 'Noto Serif KR', Georgia, 'Batang', serif;
+    color: #2e2a26;
+    line-height: 1.75;
+    background: #f9f8f4;
     -webkit-font-smoothing: antialiased;
   }
 
   .page {
-    max-width: 640px;
+    max-width: 580px;
     margin: 0 auto;
-    padding: 3.5rem 2rem 4rem;
+    padding: 5rem 2rem 3.5rem;
   }
 
   /* ── 헤더 ── */
   .header {
-    margin-bottom: 3rem;
-    padding-bottom: 1.8rem;
-    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 3.2rem;
   }
-  .header h1 {
-    font-size: 1.6rem;
+  .title-block {
+    margin-bottom: 1.4rem;
+  }
+  .title-block h1 {
+    font-size: 2rem;
     font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: .15rem;
+    letter-spacing: -1.2px;
+    line-height: 1.2;
   }
-  .header .subtitle {
+  .title-block .subtitle {
     font-size: .92rem;
-    color: #555;
-    font-weight: 400;
-    margin-bottom: 1.1rem;
+    color: #80776d;
+    font-style: italic;
+    margin-top: .15rem;
   }
-  .header .meta {
-    font-size: .82rem;
-    color: #777;
+  .header .info {
+    font-size: .76rem;
+    color: #a09890;
     line-height: 1.7;
   }
-  .header .meta span + span::before {
-    content: '·';
-    margin: 0 .5rem;
-    color: #bbb;
+  .header .info .dates {
+    color: #6b6560;
   }
 
-  /* ── 일정 개요 ── */
+  /* ── 개요 ── */
   .overview {
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
+    padding-left: .8rem;
   }
-  .overview h2 {
-    font-size: .85rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1rem;
+  .ov-day {
+    margin-bottom: .85rem;
   }
-  .overview-days {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-  @media (max-width: 600px) {
-    .overview-days { grid-template-columns: 1fr; gap: 1.2rem; }
-  }
-  .ov-day {}
+  .ov-day:last-child { margin-bottom: 0; }
   .ov-day h3 {
-    font-size: .78rem;
+    font-size: .73rem;
     font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: .4rem;
-    padding-bottom: .3rem;
-    border-bottom: 1px solid #ddd;
+    color: #4a5548;
+    letter-spacing: .01em;
   }
-  .ov-day ul {
-    list-style: none;
-    font-size: .78rem;
-    color: #555;
-    line-height: 1.75;
-  }
-  .ov-day .ov-time {
-    display: inline-block;
-    width: 2.8em;
-    color: #999;
-    font-variant-numeric: tabular-nums;
+  .ov-day p {
+    font-size: .72rem;
+    color: #a8a198;
+    line-height: 1.65;
   }
 
-  /* ── Day 섹션 ── */
-  .day {
-    margin-bottom: 2.8rem;
-  }
-  .day-header {
+  /* ── Day 헤더 ── */
+  .day-head {
     margin-bottom: .2rem;
-    padding-bottom: .6rem;
-    border-bottom: 2px solid #1a1a1a;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: .3rem;
   }
-  .day-header h2 {
-    font-size: 1.05rem;
+  .day-head h2 {
+    font-size: 1.08rem;
     font-weight: 700;
+    letter-spacing: -0.4px;
+    line-height: 1.35;
   }
-  .day-header .route {
-    font-size: .82rem;
-    color: #888;
+  .day-head .dow {
     font-weight: 400;
   }
-  .day-header .cost {
-    font-size: .82rem;
-    color: #888;
+  .day-head .route {
+    display: block;
+    font-size: .78rem;
+    font-style: italic;
+    font-weight: 400;
+    color: #a09890;
+    margin-top: .05rem;
+  }
+  .day-sub {
+    font-size: .71rem;
+    color: #b5ada4;
+    margin-bottom: .55rem;
   }
 
-  /* ── 일정 테이블 ── */
+  /* ── 테이블 ── */
   .sched {
     width: 100%;
     border-collapse: collapse;
   }
   .sched td {
-    padding: .5rem 0;
     vertical-align: top;
-    border-bottom: 1px solid #eee;
-  }
-  .sched tr:last-child td {
-    border-bottom: none;
   }
   .sched .td-time {
-    width: 3.2rem;
-    font-size: .82rem;
-    color: #999;
+    width: 2.6rem;
+    font-size: .74rem;
+    color: #4a5548;
     font-variant-numeric: tabular-nums;
-    padding-right: .8rem;
+    padding: .35rem .4rem .35rem 0;
     white-space: nowrap;
   }
   .sched .td-content {
-    font-size: .88rem;
+    font-size: .84rem;
+    line-height: 1.6;
+    padding: .35rem 0;
   }
   .sched .td-cost {
-    width: 5rem;
+    width: 3.5rem;
     text-align: right;
-    font-size: .82rem;
-    color: #888;
+    font-size: .71rem;
+    color: #a09890;
+    padding: .35rem 0;
     white-space: nowrap;
   }
-  .act {
-    font-weight: 600;
+
+  /* 내용이 많은 행은 아래 여백을 살짝 더 */
+  .sched .has-detail .td-time,
+  .sched .has-detail .td-content,
+  .sched .has-detail .td-cost {
+    padding-bottom: .5rem;
   }
+
+  .act { font-weight: 600; }
   .desc {
-    font-size: .8rem;
-    color: #777;
+    font-size: .74rem;
+    color: #9a938b;
+    line-height: 1.5;
     margin-top: 1px;
   }
   .move {
-    font-size: .78rem;
-    color: #aaa;
-    margin-top: 2px;
+    font-size: .7rem;
+    color: #c8c1b8;
+    margin-top: 1px;
   }
 
-  /* 섹션 구분 (오전/오후 등) */
-  .section-label td {
-    padding: .8rem 0 .3rem;
-    border-bottom: none;
+  /* ── DAY 구분 ── */
+  .day-rule {
+    border: none;
+    height: 0;
+    border-top: 1px solid #d8d2c9;
+    margin: 2.5rem 0 2rem;
+  }
+
+  /* ── 시간대 구분 ── */
+  .time-label td {
+    padding: 1rem 0 .15rem;
+    font-size: .66rem;
+    font-weight: 700;
+    color: #4a5548;
+    letter-spacing: .05em;
+  }
+  /* 첫 번째 시간대 라벨은 위 간격 작게 */
+  .time-label-first td {
+    padding-top: .3rem;
+  }
+
+  /* ── 동선 ── */
+  .route-line {
     font-size: .72rem;
+    font-style: italic;
+    color: #a8a198;
+    line-height: 1.55;
+    margin-top: .5rem;
+  }
+  .route-line strong {
+    color: #635c55;
     font-weight: 600;
-    color: #aaa;
-    letter-spacing: .5px;
+    font-style: normal;
+  }
+  .route-line + .route-line {
+    margin-top: .1rem;
   }
 
-  /* ── 동선도 ── */
-  .route-map {
-    margin-top: .8rem;
-    margin-bottom: 2.8rem;
-  }
-  .route-map .rm-label {
-    font-size: .76rem;
-    font-weight: 600;
-    color: #999;
-    margin-bottom: .5rem;
-  }
-  .route-map svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .route-map + .route-map {
-    margin-top: 0;
-    padding-top: .8rem;
-    border-top: 1px solid #eee;
-  }
-
-  /* ── 비용 합계 ── */
+  /* ── 합계 ── */
   .total {
-    padding: 1rem 0;
-    border-top: 2px solid #1a1a1a;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 3rem;
+    margin-top: 3rem;
+    padding-top: .6rem;
+    border-top: 2px solid #2e2a26;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    flex-wrap: wrap;
-    gap: .5rem;
+    margin-bottom: 3.5rem;
   }
   .total .label {
-    font-size: .85rem;
-    color: #555;
+    font-size: .76rem;
+    color: #80776d;
   }
   .total .amount {
     font-size: 1.15rem;
     font-weight: 700;
-  }
-  .total .breakdown {
-    width: 100%;
-    font-size: .78rem;
-    color: #999;
-    margin-top: .2rem;
+    letter-spacing: -0.5px;
   }
 
-  /* ── 푸터 ── */
   .footer {
-    text-align: left;
-    font-size: .72rem;
-    color: #bbb;
-    padding-top: 1rem;
-    border-top: 1px solid #eee;
+    font-size: .64rem;
+    color: #c8c1b8;
+    letter-spacing: .02em;
   }
 
   @media print {
-    .page { padding: 2rem 1.5rem; }
-    .day { page-break-inside: avoid; }
+    body { background: #fff; }
+    .page { padding: 2.5rem 1.8rem; }
   }
   @media (max-width: 500px) {
-    .page { padding: 2rem 1.2rem; }
-    .header h1 { font-size: 1.35rem; }
-    .day-header { flex-direction: column; }
-    .overview-days { grid-template-columns: 1fr; }
+    .page { padding: 3rem 1.3rem 2.5rem; }
+    .title-block h1 { font-size: 1.6rem; }
+    .overview { padding-left: .5rem; }
   }
 </style>
 </head>
@@ -248,412 +227,249 @@
 <div class="page">
 
 <header class="header">
-  <h1>교토 가족여행</h1>
-  <p class="subtitle">사위랑 함께 가는 봄 여행</p>
-  <div class="meta">
-    <span>4월 17일(금) — 19일(일)</span>
-    <span>2박 3일</span>
-    <span>오사카 IN/OUT</span>
-    <span>사쿠라 테라스</span>
+  <div class="title-block">
+    <h1>교토 가족여행</h1>
+    <p class="subtitle">사위랑 함께 가는 봄 여행</p>
+  </div>
+  <div class="info">
+    <span class="dates">2026년 4월 17일(금) — 19일(일)</span> · 2박 3일 · 오사카 IN/OUT<br>
+    숙소 — 사쿠라 테라스, 1-1 Karasuma-cho Higashi-kujo Minami-ku, Kyoto 601-8016
   </div>
 </header>
 
 
-<!-- ── 한눈에 보는 일정 ── -->
 <div class="overview">
-  <h2>한눈에 보는 일정</h2>
-  <div class="overview-days">
-    <div class="ov-day">
-      <h3>4.17 금 — 인천→교토</h3>
-      <ul>
-        <li><span class="ov-time">06:00</span> 기상</li>
-        <li><span class="ov-time">07:28</span> 인천공항으로 출발</li>
-        <li><span class="ov-time">09:00</span> 인천공항 도착 및 식사</li>
-        <li><span class="ov-time">11:10</span> 오사카행 비행기 출발</li>
-        <li><span class="ov-time">13:10</span> 오사카 비행기 도착</li>
-        <li><span class="ov-time">15:14</span> 하루카 교토행 출발</li>
-        <li><span class="ov-time">16:34</span> 하루카 교토 도착</li>
-        <li><span class="ov-time">17:00</span> 호텔 체크인</li>
-        <li><span class="ov-time">17:10</span> 저녁 — 초밥</li>
-        <li><span class="ov-time">18:30</span> 쇼핑 타임</li>
-        <li><span class="ov-time">21:00</span> 숙소 복귀 (야식)</li>
-        <li><span class="ov-time">22:00</span> 자유시간 및 취침</li>
-      </ul>
-    </div>
-    <div class="ov-day">
-      <h3>4.18 토 — 교토 종일</h3>
-      <ul>
-        <li><span class="ov-time">05:30</span> 기상</li>
-        <li><span class="ov-time">07:00</span> 기요미즈데라 관광</li>
-        <li><span class="ov-time">09:00</span> 행자교 관광</li>
-        <li><span class="ov-time">11:00</span> 식사 및 카페 휴식</li>
-        <li><span class="ov-time">14:00</span> 돈키호테 쇼핑</li>
-        <li><span class="ov-time">16:00</span> 빵집 쇼핑, 숙소 휴식</li>
-        <li><span class="ov-time">17:30</span> 니시키 시장 관광</li>
-        <li><span class="ov-time">19:00</span> 장어 덮밥</li>
-        <li><span class="ov-time">20:30</span> 다이소, 100엔샵</li>
-        <li><span class="ov-time">21:30</span> 야키토리 + 맥주 한잔</li>
-        <li><span class="ov-time">23:00</span> 숙소 복귀 및 취침</li>
-      </ul>
-    </div>
-    <div class="ov-day">
-      <h3>4.19 일 — 교토→인천</h3>
-      <ul>
-        <li><span class="ov-time">08:30</span> 기상</li>
-        <li><span class="ov-time">09:30</span> 체크 아웃</li>
-        <li><span class="ov-time">10:00</span> 나카우 (가성비 밥집)</li>
-        <li><span class="ov-time">11:30</span> 하루카 공항 출발</li>
-        <li><span class="ov-time">12:50</span> 하루카 공항 도착</li>
-        <li><span class="ov-time">15:05</span> 인천행 비행기 출발</li>
-        <li><span class="ov-time">17:05</span> 인천 비행기 도착</li>
-        <li><span class="ov-time">18:20</span> 집으로 가자잇!</li>
-      </ul>
-    </div>
+  <div class="ov-day">
+    <h3>4.17 금 — 인천→교토</h3>
+    <p>기상 06:00 → 인천공항 07:28 → 오사카행 11:10 → 도착 13:10 → 하루카 15:14 → 교토 16:34 → 체크인 17:00 → 초밥 17:10 → 쇼핑 18:30 → 숙소 21:00</p>
+  </div>
+  <div class="ov-day">
+    <h3>4.18 토 — 교토 종일</h3>
+    <p>기상 05:30 → 기요미즈데라 07:00 → 행자교 09:00 → 식사 11:00 → 돈키호테 14:00 → 숙소 휴식 16:00 → 니시키 시장 17:30 → 장어 덮밥 19:00 → 다이소 20:30 → 야키토리 21:30 → 취침 23:00</p>
+  </div>
+  <div class="ov-day">
+    <h3>4.19 일 — 교토→인천</h3>
+    <p>기상 08:30 → 체크아웃 09:30 → 나카우 10:00 → 하루카 11:30 → 공항 12:50 → 인천행 15:05 → 도착 17:05 → 집으로 가자잇!</p>
   </div>
 </div>
 
 
-<!-- ═══════════ DAY 1 ═══════════ -->
-<div class="day">
-  <div class="day-header">
-    <h2>4월 17일 금요일 <span class="route">인천 → 오사카 → 교토</span></h2>
-    <span class="cost">교통비 1,880엔</span>
-  </div>
-  <table class="sched">
-    <tbody>
-      <tr class="section-label"><td colspan="3">출발</td></tr>
-      <tr>
-        <td class="td-time">06:00</td>
-        <td class="td-content"><span class="act">기상</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">07:28</td>
-        <td class="td-content"><span class="act">인천공항으로 출발</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">09:00</td>
-        <td class="td-content">
-          <span class="act">인천공항 도착 및 식사</span>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
+<!-- ━━━ DAY 1 ━━━ -->
+<hr class="day-rule">
 
-      <tr class="section-label"><td colspan="3">이동</td></tr>
-      <tr>
-        <td class="td-time">11:10</td>
-        <td class="td-content"><span class="act">오사카행 비행기 출발</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">13:10</td>
-        <td class="td-content"><span class="act">오사카 비행기 도착</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">15:14</td>
-        <td class="td-content">
-          <span class="act">하루카 교토행 출발</span>
-          <div class="desc">타기 전 간단히 요깃거리</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">16:34</td>
-        <td class="td-content"><span class="act">하루카 교토 도착</span></td>
-        <td class="td-cost"></td>
-      </tr>
-
-      <tr class="section-label"><td colspan="3">교토</td></tr>
-      <tr>
-        <td class="td-time">17:00</td>
-        <td class="td-content">
-          <span class="act">호텔 체크인 및 짐 두기</span>
-          <div class="move">숙소 → 밥집, 지하철 10분</div>
-        </td>
-        <td class="td-cost">880엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">17:10</td>
-        <td class="td-content">
-          <span class="act">저녁 식사 — 초밥</span>
-          <div class="desc">Kanazawa Maimon Sushi, Kyoto Porta</div>
-          <div class="move">밥집 → GU, 도보 7분</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">18:30</td>
-        <td class="td-content">
-          <span class="act">쇼핑</span>
-          <div class="desc">GU, 유니클로, 몽벨, 무인양품, 칼디 — AEON 몰에 몰려있음</div>
-          <div class="move">GU → 이온몰, 도보 10분</div>
-          <div class="move">이온몰 → 숙소, 도보 10분 또는 택시 10분</div>
-        </td>
-        <td class="td-cost">1,000엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">21:00</td>
-        <td class="td-content"><span class="act">숙소 복귀 (야식)</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">22:00</td>
-        <td class="td-content"><span class="act">자유시간 및 취침</span></td>
-        <td class="td-cost"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="route-map">
-    <div class="rm-label">동선</div>
-    <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
-      <!-- 연결선 -->
-      <line x1="40" y1="32" x2="148" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="192" y1="32" x2="268" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="312" y1="32" x2="388" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="432" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5"/>
-
-      <!-- 이동수단 -->
-      <text x="94" y="24" font-size="9" fill="#aaa" text-anchor="middle">지하철 10분</text>
-      <text x="230" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보 7분</text>
-      <text x="350" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보 10분</text>
-      <text x="485" y="24" font-size="9" fill="#aaa" text-anchor="middle">도보/택시</text>
-
-      <!-- 숙소 (출발) -->
-      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-      <text x="30" y="71" font-size="8" fill="#aaa" text-anchor="middle">사쿠라 테라스</text>
-
-      <!-- 마이몬 초밥 -->
-      <circle cx="170" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="170" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">마이몬 초밥</text>
-      <text x="170" y="71" font-size="8" fill="#aaa" text-anchor="middle">Kyoto Porta</text>
-
-      <!-- GU -->
-      <circle cx="290" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="290" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">GU</text>
-
-      <!-- 이온몰 -->
-      <circle cx="410" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="410" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">이온몰</text>
-      <text x="410" y="71" font-size="8" fill="#aaa" text-anchor="middle">유니클로, 몽벨 등</text>
-
-      <!-- 숙소 (복귀) -->
-      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-
-      <!-- 비용 -->
-      <text x="94" y="92" font-size="9" fill="#888" text-anchor="middle">880엔</text>
-      <text x="485" y="92" font-size="9" fill="#888" text-anchor="middle">~1,000엔</text>
-    </svg>
-  </div>
+<div class="day-head">
+  <h2>4월 17일 <span class="dow">금요일</span></h2>
+  <span class="route">인천 → 오사카 → 교토</span>
 </div>
+<div class="day-sub">교통비 1,880엔</div>
+
+<table class="sched">
+  <tbody>
+    <tr>
+      <td class="td-time">06:00</td>
+      <td class="td-content"><span class="act">기상</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">07:28</td>
+      <td class="td-content"><span class="act">인천공항으로 출발</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">09:00</td>
+      <td class="td-content"><span class="act">인천공항 도착 및 식사</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">11:10</td>
+      <td class="td-content"><span class="act">오사카행 비행기 출발</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">13:10</td>
+      <td class="td-content"><span class="act">오사카 비행기 도착</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">15:14</td>
+      <td class="td-content">
+        <span class="act">하루카 교토행 출발</span>
+        <div class="desc">타기 전 간단히 요깃거리</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">16:34</td>
+      <td class="td-content"><span class="act">하루카 교토 도착</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">17:00</td>
+      <td class="td-content">
+        <span class="act">호텔 체크인 및 짐 두기</span>
+        <div class="move">숙소 → 밥집, 지하철 10분</div>
+      </td>
+      <td class="td-cost">880엔</td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">17:10</td>
+      <td class="td-content">
+        <span class="act">저녁 식사 — 초밥</span>
+        <div class="desc">Kanazawa Maimon Sushi, Kyoto Porta</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">18:30</td>
+      <td class="td-content">
+        <span class="act">쇼핑</span>
+        <div class="desc">GU, 유니클로, 몽벨, 무인양품, 칼디 — AEON 몰에 몰려있음</div>
+        <div class="move">밥집 → GU 도보 7분 → 이온몰 도보 10분 → 숙소 도보/택시</div>
+      </td>
+      <td class="td-cost">1,000엔</td>
+    </tr>
+    <tr>
+      <td class="td-time">21:00</td>
+      <td class="td-content"><span class="act">숙소 복귀 (야식)</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">22:00</td>
+      <td class="td-content"><span class="act">자유시간 및 취침</span></td>
+      <td class="td-cost"></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="route-line">숙소(쿠조) → <strong>마이몬 초밥</strong> 지하철 10분 → <strong>GU</strong> 도보 7분 → <strong>이온몰</strong> 도보 10분 → 숙소</div>
 
 
-<!-- ═══════════ DAY 2 ═══════════ -->
-<div class="day">
-  <div class="day-header">
-    <h2>4월 18일 토요일 <span class="route">교토 종일 관광</span></h2>
-    <span class="cost">교통비 4,680엔</span>
-  </div>
-  <table class="sched">
-    <tbody>
-      <tr class="section-label"><td colspan="3">오전 — 히가시야마</td></tr>
-      <tr>
-        <td class="td-time">05:30</td>
-        <td class="td-content">
-          <span class="act">기상</span>
-          <div class="move">숙소 → 기요미즈데라, 택시 20분</div>
-        </td>
-        <td class="td-cost">2,000엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">07:00</td>
-        <td class="td-content">
-          <span class="act">기요미즈데라 관광</span>
-          <div class="desc">행자교로 걸어가면서 근처 관광지 살살 보면서 가도 됨</div>
-          <div class="move">기요미즈데라 → 행자교, 도보 30분</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">09:00</td>
-        <td class="td-content">
-          <span class="act">행자교 관광</span>
-          <div class="move">행자교 → 밥집, 도보 2분</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">11:00</td>
-        <td class="td-content">
-          <span class="act">식사 및 카페 휴식</span>
-          <div class="desc">일본 가정식, Kyo Umaimonoya Sakura</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
+<!-- ━━━ DAY 2 ━━━ -->
+<hr class="day-rule" style="margin-top:3rem; margin-bottom:2.2rem;">
 
-      <tr class="section-label"><td colspan="3">오후 — 쇼핑</td></tr>
-      <tr>
-        <td class="td-time">14:00</td>
-        <td class="td-content">
-          <span class="act">돈키호테 쇼핑</span>
-          <div class="move">행자교 → 돈키호테, 버스 30분</div>
-        </td>
-        <td class="td-cost">920엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">16:00</td>
-        <td class="td-content">
-          <span class="act">빵집 쇼핑, 숙소 복귀 휴식</span>
-          <div class="desc">교토역 근처 빵집</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-
-      <tr class="section-label"><td colspan="3">저녁 — 니시키</td></tr>
-      <tr>
-        <td class="td-time">17:30</td>
-        <td class="td-content">
-          <span class="act">니시키 시장 관광</span>
-          <div class="move">숙소 → 니시키 시장, 지하철 20분</div>
-        </td>
-        <td class="td-cost">880엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">19:00</td>
-        <td class="td-content">
-          <span class="act">저녁 식사 — 장어 덮밥</span>
-          <div class="desc">쿄 우나와 본점</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">20:30</td>
-        <td class="td-content">
-          <span class="act">다이소, 100엔샵 쇼핑</span>
-          <div class="move">니시키 → 숙소, 지하철 20분</div>
-        </td>
-        <td class="td-cost">880엔</td>
-      </tr>
-      <tr>
-        <td class="td-time">21:30</td>
-        <td class="td-content">
-          <span class="act">야키토리, 쿠시카츠 + 맥주 한잔</span>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">23:00</td>
-        <td class="td-content"><span class="act">숙소 복귀 및 취침</span></td>
-        <td class="td-cost"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="route-map">
-    <div class="rm-label">오전 동선</div>
-    <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
-      <line x1="40" y1="32" x2="108" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="152" y1="32" x2="218" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="262" y1="32" x2="318" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="362" y1="32" x2="438" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="482" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5" stroke-dasharray="4,3"/>
-
-      <text x="74" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">택시 20분</text>
-      <text x="185" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 30분</text>
-      <text x="290" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 2분</text>
-      <text x="400" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">버스 30분</text>
-      <text x="510" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">복귀</text>
-
-      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-
-      <circle cx="130" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="130" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">기요미즈</text>
-      <text x="130" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">데라</text>
-
-      <circle cx="240" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="240" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">행자교</text>
-
-      <circle cx="340" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="340" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">우마이</text>
-      <text x="340" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">모노야</text>
-      <text x="340" y="80" font-size="8" fill="#aaa" text-anchor="middle">식사</text>
-
-      <circle cx="460" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="460" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">돈키호테</text>
-
-      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-
-      <text x="74" y="92" font-size="9" fill="#888" text-anchor="middle">2,000엔</text>
-      <text x="400" y="92" font-size="9" fill="#888" text-anchor="middle">920엔</text>
-    </svg>
-  </div>
-  <div class="route-map">
-    <div class="rm-label">저녁 동선</div>
-    <svg viewBox="0 0 580 95" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
-      <line x1="40" y1="32" x2="128" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="172" y1="32" x2="268" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="312" y1="32" x2="398" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="442" y1="32" x2="538" y2="32" stroke="#ccc" stroke-width="1.5"/>
-
-      <text x="84" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">지하철 20분</text>
-      <text x="220" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보</text>
-      <text x="355" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보</text>
-      <text x="490" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">지하철 20분</text>
-
-      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-
-      <circle cx="150" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="150" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">니시키</text>
-      <text x="150" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">시장</text>
-
-      <circle cx="290" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="290" y="56" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">우나와</text>
-      <text x="290" y="68" font-size="9.5" fill="#444" text-anchor="middle" font-weight="600">본점</text>
-      <text x="290" y="80" font-size="8" fill="#aaa" text-anchor="middle">장어 덮밥</text>
-
-      <circle cx="420" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="420" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">다이소</text>
-      <text x="420" y="70" font-size="8" fill="#aaa" text-anchor="middle">100엔샵</text>
-
-      <rect x="542" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="550" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-
-      <text x="84" y="88" font-size="9" fill="#888" text-anchor="middle">880엔</text>
-      <text x="490" y="88" font-size="9" fill="#888" text-anchor="middle">880엔</text>
-    </svg>
-  </div>
+<div class="day-head">
+  <h2>4월 18일 <span class="dow">토요일</span></h2>
+  <span class="route">교토 종일</span>
 </div>
+<div class="day-sub">교통비 4,680엔</div>
+
+<table class="sched">
+  <tbody>
+    <tr class="time-label time-label-first"><td colspan="3">오전 — 히가시야마</td></tr>
+    <tr class="has-detail">
+      <td class="td-time">05:30</td>
+      <td class="td-content">
+        <span class="act">기상</span>
+        <div class="move">숙소 → 기요미즈데라, 택시 20분</div>
+      </td>
+      <td class="td-cost">2,000엔</td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">07:00</td>
+      <td class="td-content">
+        <span class="act">기요미즈데라 관광</span>
+        <div class="desc">행자교로 걸어가면서 근처 관광지 살살 보면서 가도 됨</div>
+        <div class="move">기요미즈데라 → 행자교, 도보 30분</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">09:00</td>
+      <td class="td-content">
+        <span class="act">행자교 관광</span>
+        <div class="move">행자교 → 밥집, 도보 2분</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">11:00</td>
+      <td class="td-content">
+        <span class="act">식사 및 카페 휴식</span>
+        <div class="desc">일본 가정식, Kyo Umaimonoya Sakura</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+
+    <tr class="time-label"><td colspan="3">오후</td></tr>
+    <tr class="has-detail">
+      <td class="td-time">14:00</td>
+      <td class="td-content">
+        <span class="act">돈키호테 쇼핑</span>
+        <div class="move">행자교 → 돈키호테, 버스 30분</div>
+      </td>
+      <td class="td-cost">920엔</td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">16:00</td>
+      <td class="td-content">
+        <span class="act">빵집 쇼핑, 숙소 복귀 휴식</span>
+        <div class="desc">교토역 근처 빵집</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+
+    <tr class="time-label"><td colspan="3">저녁</td></tr>
+    <tr class="has-detail">
+      <td class="td-time">17:30</td>
+      <td class="td-content">
+        <span class="act">니시키 시장 관광</span>
+        <div class="move">숙소 → 니시키 시장, 지하철 20분</div>
+      </td>
+      <td class="td-cost">880엔</td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">19:00</td>
+      <td class="td-content">
+        <span class="act">저녁 식사 — 장어 덮밥</span>
+        <div class="desc">쿄 우나와 본점</div>
+      </td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr class="has-detail">
+      <td class="td-time">20:30</td>
+      <td class="td-content">
+        <span class="act">다이소, 100엔샵 쇼핑</span>
+        <div class="move">니시키 → 숙소, 지하철 20분</div>
+      </td>
+      <td class="td-cost">880엔</td>
+    </tr>
+    <tr>
+      <td class="td-time">21:30</td>
+      <td class="td-content"><span class="act">야키토리, 쿠시카츠 + 맥주 한잔</span></td>
+      <td class="td-cost"></td>
+    </tr>
+    <tr>
+      <td class="td-time">23:00</td>
+      <td class="td-content"><span class="act">숙소 복귀 및 취침</span></td>
+      <td class="td-cost"></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="route-line">오전: 숙소(쿠조) → <strong>기요미즈데라</strong> 택시 20분 → <strong>행자교</strong> 도보 30분 → <strong>우마이모노야</strong> 도보 2분 → <strong>돈키호테</strong> 버스 30분 → 숙소</div>
+<div class="route-line">저녁: 숙소 → <strong>니시키 시장</strong> 지하철 20분 → <strong>우나와 본점</strong> → <strong>다이소</strong> → 숙소 지하철 20분</div>
 
 
-<!-- ═══════════ DAY 3 ═══════════ -->
-<div class="day">
-  <div class="day-header">
-    <h2>4월 19일 일요일 <span class="route">교토 → 오사카 → 인천</span></h2>
+<!-- ━━━ DAY 3 ━━━ -->
+<div style="margin-top:2.2rem;">
+  <div class="day-head">
+    <h2>4월 19일 <span class="dow">일요일</span></h2>
+    <span class="route">교토 → 인천</span>
   </div>
+
   <table class="sched">
     <tbody>
-      <tr class="section-label"><td colspan="3">교토</td></tr>
       <tr>
         <td class="td-time">08:30</td>
         <td class="td-content"><span class="act">기상</span></td>
         <td class="td-cost"></td>
       </tr>
-      <tr>
+      <tr class="has-detail">
         <td class="td-time">09:30</td>
-        <td class="td-content">
-          <span class="act">체크 아웃</span>
-          <div class="move">숙소 → 밥집, 도보 10분</div>
-        </td>
+        <td class="td-content"><span class="act">체크 아웃</span> <span class="desc">— 숙소 → 밥집, 도보 10분</span></td>
         <td class="td-cost"></td>
       </tr>
-      <tr>
+      <tr class="has-detail">
         <td class="td-time">10:00</td>
         <td class="td-content">
           <span class="act">나카우 — 가성비 밥집</span>
@@ -661,19 +477,14 @@
         </td>
         <td class="td-cost"></td>
       </tr>
-
-      <tr class="section-label"><td colspan="3">귀국</td></tr>
       <tr>
         <td class="td-time">11:30</td>
         <td class="td-content"><span class="act">하루카 공항 출발</span></td>
         <td class="td-cost"></td>
       </tr>
-      <tr>
+      <tr class="has-detail">
         <td class="td-time">12:50</td>
-        <td class="td-content">
-          <span class="act">하루카 공항 도착</span>
-          <div class="desc">식사 아무거나</div>
-        </td>
+        <td class="td-content"><span class="act">하루카 공항 도착</span> <span class="desc">— 식사 아무거나</span></td>
         <td class="td-cost"></td>
       </tr>
       <tr>
@@ -693,52 +504,15 @@
       </tr>
     </tbody>
   </table>
-
-  <div class="route-map">
-    <div class="rm-label">동선</div>
-    <svg viewBox="0 0 580 90" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'Segoe UI','Malgun Gothic',sans-serif">
-      <line x1="40" y1="32" x2="148" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="192" y1="32" x2="328" y2="32" stroke="#ccc" stroke-width="1.5"/>
-      <line x1="372" y1="32" x2="508" y2="32" stroke="#ccc" stroke-width="1.5"/>
-
-      <text x="94" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">도보 10분</text>
-      <text x="260" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">하루카 열차</text>
-      <text x="440" y="24" font-size="8.5" fill="#aaa" text-anchor="middle">비행기</text>
-
-      <!-- 숙소 -->
-      <rect x="22" y="24" width="16" height="16" rx="2" fill="#1a1a1a"/>
-      <text x="30" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">숙소</text>
-      <text x="30" y="71" font-size="8" fill="#aaa" text-anchor="middle">체크아웃</text>
-
-      <!-- 나카우 -->
-      <circle cx="170" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="170" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">나카우</text>
-      <text x="170" y="70" font-size="8" fill="#aaa" text-anchor="middle">가성비 밥집</text>
-
-      <!-- 간사이 공항 -->
-      <circle cx="350" cy="32" r="6" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="350" y="58" font-size="10" fill="#444" text-anchor="middle" font-weight="600">간사이 공항</text>
-
-      <!-- 인천 -->
-      <circle cx="530" cy="32" r="6" fill="#1a1a1a"/>
-      <text x="530" y="58" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">인천</text>
-    </svg>
-  </div>
 </div>
 
 
-<!-- ── 교통비 합계 ── -->
 <div class="total">
-  <div>
-    <span class="label">예상 교통비 합계</span>
-  </div>
+  <span class="label">예상 교통비 합계</span>
   <span class="amount">6,560엔</span>
-  <div class="breakdown">
-    DAY 1 — 1,880엔 &nbsp;&nbsp; DAY 2 — 4,680엔 &nbsp;&nbsp; DAY 3 — 별도 없음
-  </div>
 </div>
 
-<div class="footer">교토 가족여행 · 2026년 4월 17일 — 19일</div>
+<div class="footer">교토 가족여행 · 2026년 4월</div>
 
 </div>
 
