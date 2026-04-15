@@ -1,520 +1,1559 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교토 가족여행 일정표</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>교토 가족여행 계획서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --paper: #faf6ef;
+    --paper-soft: #f2ede4;
+    --paper-dark: #e8e2d4;
+    --ink: #14110e;
+    --ink-soft: #3a342d;
+    --muted: #6b635b;
+    --hair: #d6cdbf;
+    --hair-dark: #b8ae9e;
+    --indigo: #1f3a4a;
+    --indigo-soft: #e8ecef;
+    --terra: #7a3e2a;
+    --terra-soft: #efe3d8;
 
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
+    --sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 16px;
+  }
   body {
-    font-family: 'Noto Serif KR', Georgia, 'Batang', serif;
-    color: #2e2a26;
-    line-height: 1.75;
-    background: #f9f8f4;
+    margin: 0;
+    background: var(--paper-dark);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-feature-settings: "tnum" 1;
     -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    padding-bottom: 72px;
+  }
+
+  .doc {
+    width: min(100%, 1040px);
+    margin: 22px auto 40px;
+    padding: 0 12px;
   }
 
   .page {
-    max-width: 580px;
-    margin: 0 auto;
-    padding: 5rem 2rem 3.5rem;
+    background: var(--paper);
+    padding: 18mm 16mm 16mm;
+    margin-bottom: 18px;
+    break-after: page;
+    page-break-after: always;
+    box-shadow: 0 1px 0 rgba(20, 17, 14, .05), 0 14px 30px -14px rgba(20, 17, 14, .14);
+  }
+  .page:last-child { break-after: auto; page-break-after: auto; }
+
+  h1, h2, h3, p { margin: 0; }
+
+  /* ─── HERO ─── */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 36px;
+    align-items: end;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -5px;
+    height: 1px;
+    background: var(--ink);
   }
 
-  /* ── 헤더 ── */
-  .header {
-    margin-bottom: 3.2rem;
-  }
-  .title-block {
-    margin-bottom: 1.4rem;
-  }
-  .title-block h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: -1.2px;
-    line-height: 1.2;
-  }
-  .title-block .subtitle {
-    font-size: .92rem;
-    color: #80776d;
-    font-style: italic;
-    margin-top: .15rem;
-  }
-  .header .info {
-    font-size: .76rem;
-    color: #a09890;
-    line-height: 1.7;
-  }
-  .header .info .dates {
-    color: #6b6560;
+  .kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .26em;
+    color: var(--muted);
+    text-transform: uppercase;
   }
 
-  /* ── 개요 ── */
-  .overview {
-    margin-bottom: 3.5rem;
-    padding-left: .8rem;
-  }
-  .ov-day {
-    margin-bottom: .85rem;
-  }
-  .ov-day:last-child { margin-bottom: 0; }
-  .ov-day h3 {
-    font-size: .73rem;
-    font-weight: 700;
-    color: #4a5548;
-    letter-spacing: .01em;
-  }
-  .ov-day p {
-    font-size: .72rem;
-    color: #a8a198;
-    line-height: 1.65;
+  .hero-title {
+    margin-top: 12px;
+    font-family: var(--serif);
+    font-size: 64px;
+    line-height: .94;
+    font-weight: 900;
+    letter-spacing: -.045em;
   }
 
-  /* ── Day 헤더 ── */
-  .day-head {
-    margin-bottom: .2rem;
-  }
-  .day-head h2 {
-    font-size: 1.08rem;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    line-height: 1.35;
-  }
-  .day-head .dow {
-    font-weight: 400;
-  }
-  .day-head .route {
-    display: block;
-    font-size: .78rem;
-    font-style: italic;
-    font-weight: 400;
-    color: #a09890;
-    margin-top: .05rem;
-  }
-  .day-sub {
-    font-size: .71rem;
-    color: #b5ada4;
-    margin-bottom: .55rem;
-  }
-
-  /* ── 테이블 ── */
-  .sched {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .sched td {
-    vertical-align: top;
-  }
-  .sched .td-time {
-    width: 2.6rem;
-    font-size: .74rem;
-    color: #4a5548;
-    font-variant-numeric: tabular-nums;
-    padding: .35rem .4rem .35rem 0;
-    white-space: nowrap;
-  }
-  .sched .td-content {
-    font-size: .84rem;
-    line-height: 1.6;
-    padding: .35rem 0;
-  }
-  .sched .td-cost {
-    width: 3.5rem;
-    text-align: right;
-    font-size: .71rem;
-    color: #a09890;
-    padding: .35rem 0;
-    white-space: nowrap;
-  }
-
-  /* 내용이 많은 행은 아래 여백을 살짝 더 */
-  .sched .has-detail .td-time,
-  .sched .has-detail .td-content,
-  .sched .has-detail .td-cost {
-    padding-bottom: .5rem;
-  }
-
-  .act { font-weight: 600; }
-  .desc {
-    font-size: .74rem;
-    color: #9a938b;
-    line-height: 1.5;
-    margin-top: 1px;
-  }
-  .move {
-    font-size: .7rem;
-    color: #c8c1b8;
-    margin-top: 1px;
-  }
-
-  /* ── DAY 구분 ── */
-  .day-rule {
-    border: none;
-    height: 0;
-    border-top: 1px solid #d8d2c9;
-    margin: 2.5rem 0 2rem;
-  }
-
-  /* ── 시간대 구분 ── */
-  .time-label td {
-    padding: 1rem 0 .15rem;
-    font-size: .66rem;
-    font-weight: 700;
-    color: #4a5548;
-    letter-spacing: .05em;
-  }
-  /* 첫 번째 시간대 라벨은 위 간격 작게 */
-  .time-label-first td {
-    padding-top: .3rem;
-  }
-
-  /* ── 동선 ── */
-  .route-line {
-    font-size: .72rem;
-    font-style: italic;
-    color: #a8a198;
+  .hero-sub {
+    margin-top: 14px;
+    font-size: 13px;
     line-height: 1.55;
-    margin-top: .5rem;
-  }
-  .route-line strong {
-    color: #635c55;
-    font-weight: 600;
-    font-style: normal;
-  }
-  .route-line + .route-line {
-    margin-top: .1rem;
+    color: var(--ink-soft);
+    max-width: 44ch;
   }
 
-  /* ── 합계 ── */
-  .total {
-    margin-top: 3rem;
-    padding-top: .6rem;
-    border-top: 2px solid #2e2a26;
+  .top-meta {
+    display: grid;
+    gap: 0;
+    min-width: 240px;
+  }
+  .top-meta > .meta-card + .meta-card {
+    border-top: 1px dashed var(--hair-dark);
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+
+  .meta-card {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  .meta-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+    letter-spacing: -.01em;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-top: 26px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .section-head::before {
+    content: "■";
+    font-size: 9px;
+    color: var(--indigo);
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+  .section-head span {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  /* ─── CHECKPOINT ─── */
+  .checkpoint-line {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .checkpoint {
+    padding: 11px 14px 13px;
+    border: none;
+    border-right: 1px solid var(--hair);
+    background: none;
+    min-height: 76px;
+  }
+  .checkpoint:last-child { border-right: none; }
+
+  .checkpoint-date {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .checkpoint-time {
+    display: block;
+    margin-top: 5px;
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.025em;
+    font-feature-settings: "tnum" 1;
+  }
+
+  .checkpoint-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+
+  /* ─── MAP ─── */
+  .map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) 200px;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .map-panel {
+    position: relative;
+    border: 1px solid var(--ink);
+    padding: 0;
+    background: var(--paper);
+  }
+
+  #kyoto-map {
+    height: 480px;
+    width: 100%;
+    background: #ece7de;
+  }
+
+  .leaflet-container { font-family: var(--sans); }
+
+  .num-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid var(--paper);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+  }
+  .num-marker.home { background: var(--ink); }
+  .num-marker.d1   { background: var(--terra); }
+  .num-marker.d2   { background: var(--indigo); }
+  .num-marker.d3   { background: #5f7280; }
+
+  .kyoto-tooltip {
+    background: var(--paper) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.015em !important;
+    padding: 3px 8px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .18) !important;
+    border-radius: 0 !important;
+  }
+  .kyoto-tooltip::before { display: none !important; }
+
+  .map-legend {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    z-index: 1000;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 9px 13px 10px;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .map-legend .legend-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    color: var(--muted);
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+  .map-legend .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .map-legend .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--paper);
+    box-shadow: 0 0 0 1px var(--ink);
+    flex-shrink: 0;
+  }
+
+  .move-list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .move-card {
+    padding: 10px 0 11px;
+    border: none;
+    border-bottom: 1px dashed var(--hair-dark);
+    background: none;
+  }
+  .move-card:last-child { border-bottom: none; }
+
+  .move-title {
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -.02em;
+  }
+
+  .move-desc {
+    margin-top: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -.01em;
+  }
+
+  /* ─── 3-DAY SCAN ─── */
+  .scan-stack {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .day-scan {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr) 248px;
+    border: none;
+    border-bottom: 1px solid var(--hair);
+    background: none;
+  }
+  .day-scan:last-child { border-bottom: none; }
+
+  .day-scan-left {
+    padding: 16px 16px 16px 0;
+    background: none;
+    border-right: 1px solid var(--hair);
+  }
+
+  .day-scan-main {
+    padding: 16px 20px;
+  }
+
+  .day-scan-right {
+    padding: 16px 0 16px 16px;
+    background: none;
+    border-left: 1px solid var(--hair);
+  }
+
+  .day-num {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    color: var(--indigo);
+    text-transform: uppercase;
+  }
+
+  .day-date {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.04;
+    font-weight: 800;
+    letter-spacing: -.035em;
+  }
+
+  .day-time {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -.01em;
+  }
+
+  .day-route {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -.02em;
+  }
+
+  .flow-text {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  .scan-meta {
+    display: grid;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .scan-label {
+    display: inline-block;
+    min-width: 40px;
+    margin-right: 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scan-meta > .focus { color: var(--indigo); font-weight: 700; }
+  .scan-meta > .focus .scan-label { color: var(--indigo); }
+
+  /* ─── DAY HEADER ─── */
+  .day-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 32px;
+    align-items: end;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+  }
+  .day-header::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -5px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .day-title {
+    margin-top: 10px;
+    font-family: var(--serif);
+    font-size: 44px;
+    line-height: .98;
+    font-weight: 900;
+    letter-spacing: -.04em;
+  }
+
+  .day-route-main {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: -.01em;
+  }
+
+  .day-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 32px;
+    row-gap: 12px;
+    min-width: 300px;
+  }
+
+  .day-meta-card {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  .day-meta-card .label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .day-meta-card .value {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+  }
+
+  .day-meta-card.focus .label { color: var(--indigo); }
+  .day-meta-card.focus .value {
+    color: var(--indigo);
+    font-weight: 700;
+  }
+
+  /* ─── ROUTE STRIP ─── */
+  .route-strip {
+    margin-top: 18px;
+    padding: 10px 14px;
+    border: none;
+    border-left: 3px solid var(--indigo);
+    background: var(--paper-soft);
+    font-family: var(--serif);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -.015em;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    margin-top: 20px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .group {
+    margin-top: 0;
+  }
+
+  .group-title {
+    padding: 14px 0 6px;
+    background: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .group-title::before {
+    content: "";
+    width: 18px;
+    height: 2px;
+    background: var(--indigo);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr) 96px;
+    gap: 20px;
+    align-items: baseline;
+    padding: 15px 0 16px;
+    border-bottom: 1px solid var(--hair);
+    break-inside: avoid;
+    page-break-inside: avoid;
+    position: relative;
+  }
+
+  .row.rest::before {
+    content: "";
+    position: absolute;
+    left: -16mm;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--terra);
+  }
+
+  .row.rest .main-title {
+    color: var(--terra);
+  }
+  .row.rest .main-title::before {
+    content: "休";
+    font-family: var(--serif);
+    font-weight: 800;
+    margin-right: 8px;
+    color: var(--terra);
+    letter-spacing: 0;
+  }
+
+  .time {
+    font-family: var(--mono);
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -.025em;
+    font-feature-settings: "tnum" 1;
+    color: var(--ink);
+  }
+
+  .main-title {
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -.02em;
+  }
+
+  .substack {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .subitem b {
+    display: inline-block;
+    min-width: 34px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .18em;
+    color: var(--muted);
+    margin-right: 10px;
+    text-transform: uppercase;
+  }
+
+  /* 이동 — 다음 장소로 이동하는 정보. 스캔 시 가장 먼저 눈에 띄어야 함 */
+  .subitem.transit {
+    padding: 8px 12px 9px 14px;
+    background: var(--indigo-soft);
+    border-left: 3px solid var(--indigo);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.45;
+    letter-spacing: -.005em;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 2px;
+  }
+  .subitem.transit b {
+    color: var(--indigo);
+    font-size: 9px;
+    min-width: 0;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* 메모 — 가게명·참고정보 */
+  .subitem.note {
+    padding: 2px 0 2px 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .subitem.note b {
+    color: var(--muted);
+  }
+
+  /* MAPS — 탭하면 Google Maps로 열리는 검색 링크. 카피/탭 친화적 */
+  a.subitem.maps {
+    display: flex;
+    align-items: baseline;
+    column-gap: 12px;
+    padding: 8px 12px 9px 14px;
+    background: var(--paper-soft);
+    border-left: 3px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.45;
+    letter-spacing: -.005em;
+    text-decoration: none;
+    transition: background 120ms, border-color 120ms;
+  }
+  a.subitem.maps:hover {
+    background: var(--paper-dark);
+    border-left-color: var(--indigo);
+  }
+  a.subitem.maps b {
+    color: var(--ink);
+    margin: 0;
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+  a.subitem.maps .maps-name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  a.subitem.maps::after {
+    content: "↗";
+    color: var(--muted);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+
+  /* ─── 페이지 내비 ─── */
+  .page-nav {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    z-index: 9000;
+    display: flex;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    box-shadow: 0 6px 18px rgba(20, 17, 14, .16), 0 1px 0 rgba(20, 17, 14, .06);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    padding: 10px 16px 11px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    border-right: 1px solid var(--hair);
+    transition: color 120ms, background 120ms;
+  }
+  .page-nav a:last-child { border-right: none; }
+  .page-nav a:hover { color: var(--ink); background: var(--paper-soft); }
+  .page-nav a.active {
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  @media print {
+    .page-nav { display: none !important; }
+    body { padding-bottom: 0 !important; }
+    a.subitem.maps::after { content: none; }
+    a.subitem.maps { color: var(--ink); }
+  }
+
+  @media screen and (max-width: 520px) {
+    .page-nav {
+      font-size: 10px;
+      letter-spacing: .12em;
+    }
+    .page-nav a { padding: 9px 11px 10px; }
+  }
+
+  .cost {
+    justify-self: end;
+    align-self: baseline;
+    min-width: 0;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    font-feature-settings: "tnum" 1;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+    line-height: 1.15;
+  }
+
+  .cost .cost-unit {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -.005em;
+  }
+
+  .cost .cost-total {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .cost.empty { visibility: hidden; }
+
+  /* ─── DAY TOTAL ─── */
+  .day-total {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 2px solid var(--ink);
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 3.5rem;
+    gap: 12px;
   }
-  .total .label {
-    font-size: .76rem;
-    color: #80776d;
+
+  .day-total .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    color: var(--muted);
+    text-transform: uppercase;
   }
-  .total .amount {
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+
+  .day-total .value {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -.04em;
+    white-space: nowrap;
+    font-feature-settings: "tnum" 1;
   }
 
   .footer {
-    font-size: .64rem;
-    color: #c8c1b8;
-    letter-spacing: .02em;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .1em;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
   }
 
   @media print {
     body { background: #fff; }
-    .page { padding: 2.5rem 1.8rem; }
+    .doc { width: auto; margin: 0; padding: 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      box-shadow: none;
+      border: none;
+      margin: 0;
+    }
   }
-  @media (max-width: 500px) {
-    .page { padding: 3rem 1.3rem 2.5rem; }
-    .title-block h1 { font-size: 1.6rem; }
-    .overview { padding-left: .5rem; }
+
+  @media screen and (max-width: 900px) {
+    .hero,
+    .day-header,
+    .map-layout,
+    .day-scan {
+      grid-template-columns: 1fr;
+    }
+    .checkpoint-line { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .checkpoint:nth-child(3n) { border-right: none; }
+    .checkpoint { border-bottom: 1px solid var(--hair); }
+    .checkpoint:nth-last-child(-n+3) { border-bottom: none; }
+    .day-scan-left,
+    .day-scan-right {
+      border-right: none;
+      border-left: none;
+      border-bottom: 1px dashed var(--hair);
+      padding: 14px 0;
+    }
+    .day-scan-right { border-bottom: none; }
+    .day-meta-grid { min-width: 0; }
+    .top-meta { min-width: 0; margin-top: 20px; }
+  }
+
+  @media screen and (max-width: 680px) {
+    .doc { margin: 12px auto 28px; padding: 0 8px; }
+    .page { padding: 22px 20px 24px; }
+    .hero-title { font-size: 48px; }
+    .day-title { font-size: 36px; }
+    .checkpoint-line { grid-template-columns: 1fr 1fr; }
+    .checkpoint:nth-child(2n) { border-right: none; }
+    .checkpoint:nth-child(3n) { border-right: 1px solid var(--hair); }
+    .day-meta-grid { grid-template-columns: 1fr 1fr; column-gap: 20px; }
+    .row { grid-template-columns: 60px 1fr 72px; gap: 12px; }
+    .cost { justify-self: end; }
+    .row.rest::before { left: -20px; }
+  }
+
+  @media screen and (max-width: 520px) {
+    .checkpoint-line { grid-template-columns: 1fr; }
+    .checkpoint { border-right: none !important; }
+    .hero-title { font-size: 40px; }
+    .day-title { font-size: 30px; }
+    .day-meta-grid { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 52px 1fr 68px; gap: 10px; }
   }
 </style>
 </head>
 <body>
+<main class="doc">
 
-<div class="page">
+<section class="page" id="cover">
+  <header class="hero">
+    <div>
+      <div class="kicker">교토 가족여행 계획서</div>
+      <h1 class="hero-title">교토 가족여행</h1>
+      <div class="hero-sub">2026년 4월 17일(금) - 4월 19일(일) · 2박 3일 · 오사카 IN/OUT</div>
+    </div>
+    <div class="top-meta">
+      <div class="meta-card">
+        <span class="meta-label">숙소</span>
+        <span class="meta-value">사쿠라 테라스<br>1-1 Karasuma-cho Higashi-kujo Minami-ku, Kyoto 601-8016</span>
+      </div>
+      <div class="meta-card">
+        <span class="meta-label">예상 교통비</span>
+        <span class="meta-value">6,560엔</span>
+      </div>
+    </div>
+  </header>
 
-<header class="header">
-  <div class="title-block">
-    <h1>교토 가족여행</h1>
-    <p class="subtitle">사위랑 함께 가는 봄 여행</p>
+  <section class="section">
+    <div class="section-head"><span>고정 시각</span></div>
+    <div class="checkpoint-line">
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.17 금</span>
+        <span class="checkpoint-time">11:10</span>
+        <span class="checkpoint-text">오사카행 비행기 출발</span>
+      </div>
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.17 금</span>
+        <span class="checkpoint-time">15:14</span>
+        <span class="checkpoint-text">하루카 교토행 출발</span>
+      </div>
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.17 금</span>
+        <span class="checkpoint-time">17:00</span>
+        <span class="checkpoint-text">호텔 체크인</span>
+      </div>
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.18 토</span>
+        <span class="checkpoint-time">16:00</span>
+        <span class="checkpoint-text">숙소 복귀 휴식</span>
+      </div>
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.19 일</span>
+        <span class="checkpoint-time">09:30</span>
+        <span class="checkpoint-text">체크아웃</span>
+      </div>
+
+      <div class="checkpoint">
+        <span class="checkpoint-date">4.19 일</span>
+        <span class="checkpoint-time">15:05</span>
+        <span class="checkpoint-text">인천행 비행기 출발</span>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span>권역 / 이동</span></div>
+    <div class="map-layout">
+      <div class="map-panel">
+        <div id="kyoto-map" role="img" aria-label="교토 여행 지도"></div>
+        <div class="map-legend" aria-hidden="true">
+          <div class="legend-title">방문 순서 · 일차</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#171411"></span>숙소 (베이스)</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#b5683c"></span>1일차 · 저녁</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#44584c"></span>2일차 · 종일</div>
+        </div>
+      </div>
+      <div class="move-list">
+
+        <div class="move-card">
+          <div class="move-title">간사이공항 → 교토역</div>
+          <div class="move-desc">하루카 15:14 출발 · 16:34 도착</div>
+        </div>
+
+        <div class="move-card">
+          <div class="move-title">숙소 → 기요미즈데라</div>
+          <div class="move-desc">택시 20분</div>
+        </div>
+
+        <div class="move-card">
+          <div class="move-title">기요미즈데라 → 행자교</div>
+          <div class="move-desc">도보 30분</div>
+        </div>
+
+        <div class="move-card">
+          <div class="move-title">행자교 → 돈키호테</div>
+          <div class="move-desc">버스 30분</div>
+        </div>
+
+        <div class="move-card">
+          <div class="move-title">숙소 ↔ 니시키 시장</div>
+          <div class="move-desc">지하철 20분</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span>3일 흐름</span></div>
+    <div class="scan-stack">
+
+      <article class="day-scan">
+        <div class="day-scan-left">
+          <span class="day-num">1일차</span>
+          <span class="day-date">4월 17일 금</span>
+          <span class="day-time">06:00 - 22:00</span>
+        </div>
+        <div class="day-scan-main">
+          <div class="day-route">인천 → 오사카 → 교토</div>
+          <div class="flow-text">인천공항 이동 → 오사카 도착 → 하루카 → 체크인 → 초밥 → GU → 이온몰 → 숙소</div>
+        </div>
+        <div class="day-scan-right">
+          <div class="scan-meta">
+            <div><span class="scan-label">권역</span>공항 · 교토역권 · 쿠조</div>
+            <div class="focus"><span class="scan-label">핵심</span>17:00 체크인 · 21:00 숙소 복귀</div>
+            <div><span class="scan-label">교통비</span>1,880엔</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="day-scan">
+        <div class="day-scan-left">
+          <span class="day-num">2일차</span>
+          <span class="day-date">4월 18일 토</span>
+          <span class="day-time">05:30 - 23:00</span>
+        </div>
+        <div class="day-scan-main">
+          <div class="day-route">교토 종일</div>
+          <div class="flow-text">숙소 → 기요미즈데라 → 행자교 → 식사/카페 → 돈키호테 → 숙소 휴식 → 니시키 시장 → 장어 덮밥 → 다이소 → 야키토리</div>
+        </div>
+        <div class="day-scan-right">
+          <div class="scan-meta">
+            <div><span class="scan-label">권역</span>히가시야마 · 쿠조 · 시조</div>
+            <div class="focus"><span class="scan-label">핵심</span>16:00 숙소 복귀 휴식</div>
+            <div><span class="scan-label">교통비</span>4,680엔</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="day-scan">
+        <div class="day-scan-left">
+          <span class="day-num">3일차</span>
+          <span class="day-date">4월 19일 일</span>
+          <span class="day-time">08:30 - 18:20</span>
+        </div>
+        <div class="day-scan-main">
+          <div class="day-route">교토 → 인천</div>
+          <div class="flow-text">숙소 → 나카우 → 하루카 → 공항 → 인천 → 귀가</div>
+        </div>
+        <div class="day-scan-right">
+          <div class="scan-meta">
+            <div><span class="scan-label">권역</span>쿠조 · 교토역 · 공항</div>
+            <div class="focus"><span class="scan-label">핵심</span>09:30 체크아웃 · 15:05 출발 / 17:05 도착</div>
+            <div><span class="scan-label">교통비</span>-</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</section>
+
+<section class="page" id="day-1">
+  <header class="day-header">
+    <div>
+      <div class="kicker">1일차</div>
+      <h2 class="day-title">4월 17일 금요일</h2>
+      <div class="day-route-main">인천 → 오사카 → 교토</div>
+    </div>
+    <div class="day-meta-grid">
+      <div class="day-meta-card"><span class="label">시간</span><span class="value">06:00 - 22:00</span></div>
+      <div class="day-meta-card"><span class="label">권역</span><span class="value">공항 · 교토역권 · 쿠조</span></div>
+      <div class="day-meta-card focus"><span class="label">핵심</span><span class="value">17:00 체크인 · 21:00 숙소 복귀</span></div>
+      <div class="day-meta-card"><span class="label">교통비</span><span class="value">1,880엔</span></div>
+    </div>
+  </header>
+
+  <div class="route-strip">인천공항 이동 → 오사카 도착 → 하루카 → 체크인 → 초밥 → GU → 이온몰 → 숙소</div>
+
+  <div class="timeline">
+
+    <div class="group">
+      <div class="group-title">오전 · 출국</div>
+
+      <div class="row">
+        <div class="time">06:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">기상</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">07:28</div>
+        <div class="detail-wrap">
+          <div class="main-title">인천공항으로 출발</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">09:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">인천공항 도착 및 식사</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">11:10</div>
+        <div class="detail-wrap">
+          <div class="main-title">오사카행 비행기 출발</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="group">
+      <div class="group-title">오후 · 오사카 도착 / 교토 이동</div>
+
+      <div class="row">
+        <div class="time">13:10</div>
+        <div class="detail-wrap">
+          <div class="main-title">오사카 비행기 도착</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">15:14</div>
+        <div class="detail-wrap">
+          <div class="main-title">하루카 교토행 출발</div>
+<div class="substack"><div class="subitem note"><b>메모</b>타기 전 간단히 요깃거리</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">16:34</div>
+        <div class="detail-wrap">
+          <div class="main-title">하루카 교토 도착</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="group">
+      <div class="group-title">저녁 · 체크인 / 쇼핑</div>
+
+      <div class="row rest">
+        <div class="time">17:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">호텔 체크인 및 짐 두기</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=Sakura+Terrace+Kyoto" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">Sakura Terrace · 사쿠라 테라스</span></a><div class="subitem transit"><b>이동</b>숙소 → 밥집, 지하철 10분</div></div>
+        </div>
+<div class="cost"><span class="cost-unit">220엔 × 4</span><span class="cost-total">880엔</span></div>
+      </div>
+
+      <div class="row">
+        <div class="time">17:10</div>
+        <div class="detail-wrap">
+          <div class="main-title">저녁 식사 - 초밥</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=Kanazawa+Maimon+Sushi+Kyoto+Porta" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">金沢まいもん寿司 京都ポルタ店</span></a><div class="subitem note"><b>메모</b>Kanazawa Maimon Sushi, Kyoto Porta</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">18:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">쇼핑</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=AEON+Mall+Kyoto" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">イオンモール京都 · AEON Mall Kyoto</span></a><div class="subitem note"><b>메모</b>GU, 유니클로, 몽벨, 무인양품, 칼디 - AEON 몰에 몰려있음</div><div class="subitem transit"><b>이동</b>밥집 → GU 도보 7분 → 이온몰 도보 10분</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row rest">
+        <div class="time">21:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">숙소 복귀 (야식)</div>
+<div class="substack"><div class="subitem transit"><b>이동</b>이온몰 → 숙소, 도보 10분 OR 택시 10분</div></div>
+        </div>
+<div class="cost">1,000엔</div>
+      </div>
+
+      <div class="row rest">
+        <div class="time">22:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">자유시간 및 취침</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
   </div>
-  <div class="info">
-    <span class="dates">2026년 4월 17일(금) — 19일(일)</span> · 2박 3일 · 오사카 IN/OUT<br>
-    숙소 — 사쿠라 테라스, 1-1 Karasuma-cho Higashi-kujo Minami-ku, Kyoto 601-8016
+</section>
+
+<section class="page" id="day-2">
+  <header class="day-header">
+    <div>
+      <div class="kicker">2일차</div>
+      <h2 class="day-title">4월 18일 토요일</h2>
+      <div class="day-route-main">교토 종일</div>
+    </div>
+    <div class="day-meta-grid">
+      <div class="day-meta-card"><span class="label">시간</span><span class="value">05:30 - 23:00</span></div>
+      <div class="day-meta-card"><span class="label">권역</span><span class="value">히가시야마 · 쿠조 · 시조</span></div>
+      <div class="day-meta-card focus"><span class="label">핵심</span><span class="value">16:00 숙소 복귀 휴식</span></div>
+      <div class="day-meta-card"><span class="label">교통비</span><span class="value">4,680엔</span></div>
+    </div>
+  </header>
+
+  <div class="route-strip">숙소 → 기요미즈데라 → 행자교 → 식사/카페 → 돈키호테 → 숙소 휴식 → 니시키 시장 → 장어 덮밥 → 다이소 → 야키토리</div>
+
+  <div class="timeline">
+
+    <div class="group">
+      <div class="group-title">오전 · 히가시야마</div>
+
+      <div class="row">
+        <div class="time">05:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">기상</div>
+<div class="substack"><div class="subitem transit"><b>이동</b>숙소 → 기요미즈데라, 택시 20분</div></div>
+        </div>
+<div class="cost">2,000엔</div>
+      </div>
+
+      <div class="row">
+        <div class="time">07:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">기요미즈데라 관광</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=清水寺" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">清水寺 · Kiyomizu-dera</span></a><div class="subitem note"><b>메모</b>행자교로 걸어가면서 근처 관광지 살살 보면서 가도 됨</div><div class="subitem transit"><b>이동</b>기요미즈데라 → 행자교, 도보 30분</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">09:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">행자교 관광</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=行者橋+祇園" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">行者橋 · Gyoja-bashi (祇園 白川)</span></a><div class="subitem transit"><b>이동</b>행자교 → 밥집, 도보 2분</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">11:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">식사 및 카페 휴식</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=Kyo+Umaimonoya+Sakura" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">京 うまいもん屋 さくら</span></a><div class="subitem note"><b>메모</b>일본 가정식, Kyo Umaimonoya Sakura</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="group">
+      <div class="group-title">오후</div>
+
+      <div class="row">
+        <div class="time">14:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">돈키호테 쇼핑</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=ドン・キホーテ+京都アバンティ店" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">ドン・キホーテ 京都アバンティ店</span></a><div class="subitem transit"><b>이동</b>행자교 → 돈키호테, 버스 30분</div></div>
+        </div>
+<div class="cost"><span class="cost-unit">230엔 × 4</span><span class="cost-total">920엔</span></div>
+      </div>
+
+      <div class="row rest">
+        <div class="time">16:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">빵집 쇼핑, 숙소 복귀 휴식</div>
+<div class="substack"><div class="subitem note"><b>메모</b>교토역 근처 빵집</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="group">
+      <div class="group-title">저녁</div>
+
+      <div class="row">
+        <div class="time">17:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">니시키 시장 관광</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=錦市場" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">錦市場 · Nishiki Market</span></a><div class="subitem transit"><b>이동</b>숙소 → 니시키 시장, 지하철 20분</div></div>
+        </div>
+<div class="cost"><span class="cost-unit">220엔 × 4</span><span class="cost-total">880엔</span></div>
+      </div>
+
+      <div class="row">
+        <div class="time">19:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">저녁 식사 - 장어 덮밥</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=쿄+우나와+본점" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">쿄 우나와 본점</span></a><div class="subitem note"><b>메모</b>쿄 우나와 본점</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">20:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">다이소, 100엔샵 쇼핑</div>
+<div class="substack"><div class="subitem transit"><b>이동</b>니시키 → 숙소, 지하철 20분</div></div>
+        </div>
+<div class="cost"><span class="cost-unit">220엔 × 4</span><span class="cost-total">880엔</span></div>
+      </div>
+
+      <div class="row">
+        <div class="time">21:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">야키토리, 쿠시카츠 + 맥주 한잔</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row rest">
+        <div class="time">23:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">숙소 복귀 및 취침</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
   </div>
-</header>
+</section>
 
+<section class="page" id="day-3">
+  <header class="day-header">
+    <div>
+      <div class="kicker">3일차</div>
+      <h2 class="day-title">4월 19일 일요일</h2>
+      <div class="day-route-main">교토 → 인천</div>
+    </div>
+    <div class="day-meta-grid">
+      <div class="day-meta-card"><span class="label">시간</span><span class="value">08:30 - 18:20</span></div>
+      <div class="day-meta-card"><span class="label">권역</span><span class="value">쿠조 · 교토역 · 공항</span></div>
+      <div class="day-meta-card focus"><span class="label">핵심</span><span class="value">09:30 체크아웃 · 15:05 출발 / 17:05 도착</span></div>
+      <div class="day-meta-card"><span class="label">교통비</span><span class="value">-</span></div>
+    </div>
+  </header>
 
-<div class="overview">
-  <div class="ov-day">
-    <h3>4.17 금 — 인천→교토</h3>
-    <p>기상 06:00 → 인천공항 07:28 → 오사카행 11:10 → 도착 13:10 → 하루카 15:14 → 교토 16:34 → 체크인 17:00 → 초밥 17:10 → 쇼핑 18:30 → 숙소 21:00</p>
+  <div class="route-strip">숙소 → 나카우 → 하루카 → 공항 → 인천 → 귀가</div>
+
+  <div class="timeline">
+
+    <div class="group">
+      <div class="group-title">오전 · 체크아웃 / 공항 이동</div>
+
+      <div class="row">
+        <div class="time">08:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">기상</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">09:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">체크 아웃</div>
+<div class="substack"><div class="subitem transit"><b>이동</b>숙소 → 밥집, 도보 10분</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">10:00</div>
+        <div class="detail-wrap">
+          <div class="main-title">나카우 - 가성비 밥집</div>
+<div class="substack"><a class="subitem maps" href="https://www.google.com/maps/search/?api=1&query=なか卯+京都八条口" target="_blank" rel="noopener"><b>MAPS</b><span class="maps-name">なか卯 京都八条口店 · Nakau</span></a><div class="subitem note"><b>메모</b>Nakau, Kyoto Hachijo Entrance</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">11:30</div>
+        <div class="detail-wrap">
+          <div class="main-title">하루카 공항 출발</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="group">
+      <div class="group-title">오후 · 귀국</div>
+
+      <div class="row">
+        <div class="time">12:50</div>
+        <div class="detail-wrap">
+          <div class="main-title">하루카 공항 도착</div>
+<div class="substack"><div class="subitem note"><b>메모</b>식사 아무거나</div></div>
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">15:05</div>
+        <div class="detail-wrap">
+          <div class="main-title">인천행 비행기 출발</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">17:05</div>
+        <div class="detail-wrap">
+          <div class="main-title">인천 비행기 도착</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+      <div class="row">
+        <div class="time">18:20</div>
+        <div class="detail-wrap">
+          <div class="main-title">집으로 가자잇!</div>
+
+        </div>
+<div class="cost empty">-</div>
+      </div>
+
+    </div>
+
+    <div class="day-total">
+      <div class="label">예상 교통비 합계</div>
+      <div class="value">6,560엔</div>
+    </div>
+
   </div>
-  <div class="ov-day">
-    <h3>4.18 토 — 교토 종일</h3>
-    <p>기상 05:30 → 기요미즈데라 07:00 → 행자교 09:00 → 식사 11:00 → 돈키호테 14:00 → 숙소 휴식 16:00 → 니시키 시장 17:30 → 장어 덮밥 19:00 → 다이소 20:30 → 야키토리 21:30 → 취침 23:00</p>
-  </div>
-  <div class="ov-day">
-    <h3>4.19 일 — 교토→인천</h3>
-    <p>기상 08:30 → 체크아웃 09:30 → 나카우 10:00 → 하루카 11:30 → 공항 12:50 → 인천행 15:05 → 도착 17:05 → 집으로 가자잇!</p>
-  </div>
-</div>
+</section>
 
+</main>
 
-<!-- ━━━ DAY 1 ━━━ -->
-<hr class="day-rule">
+<nav class="page-nav" aria-label="페이지 이동">
+  <a href="#cover" data-target="cover">표지</a>
+  <a href="#day-1" data-target="day-1">1일</a>
+  <a href="#day-2" data-target="day-2">2일</a>
+  <a href="#day-3" data-target="day-3">3일</a>
+</nav>
 
-<div class="day-head">
-  <h2>4월 17일 <span class="dow">금요일</span></h2>
-  <span class="route">인천 → 오사카 → 교토</span>
-</div>
-<div class="day-sub">교통비 1,880엔</div>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+  const map = L.map('kyoto-map', {
+    scrollWheelZoom: false,
+    zoomControl: true,
+    attributionControl: true
+  });
 
-<table class="sched">
-  <tbody>
-    <tr>
-      <td class="td-time">06:00</td>
-      <td class="td-content"><span class="act">기상</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">07:28</td>
-      <td class="td-content"><span class="act">인천공항으로 출발</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">09:00</td>
-      <td class="td-content"><span class="act">인천공항 도착 및 식사</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">11:10</td>
-      <td class="td-content"><span class="act">오사카행 비행기 출발</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">13:10</td>
-      <td class="td-content"><span class="act">오사카 비행기 도착</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">15:14</td>
-      <td class="td-content">
-        <span class="act">하루카 교토행 출발</span>
-        <div class="desc">타기 전 간단히 요깃거리</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">16:34</td>
-      <td class="td-content"><span class="act">하루카 교토 도착</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">17:00</td>
-      <td class="td-content">
-        <span class="act">호텔 체크인 및 짐 두기</span>
-        <div class="move">숙소 → 밥집, 지하철 10분</div>
-      </td>
-      <td class="td-cost">880엔</td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">17:10</td>
-      <td class="td-content">
-        <span class="act">저녁 식사 — 초밥</span>
-        <div class="desc">Kanazawa Maimon Sushi, Kyoto Porta</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">18:30</td>
-      <td class="td-content">
-        <span class="act">쇼핑</span>
-        <div class="desc">GU, 유니클로, 몽벨, 무인양품, 칼디 — AEON 몰에 몰려있음</div>
-        <div class="move">밥집 → GU 도보 7분 → 이온몰 도보 10분 → 숙소 도보/택시</div>
-      </td>
-      <td class="td-cost">1,000엔</td>
-    </tr>
-    <tr>
-      <td class="td-time">21:00</td>
-      <td class="td-content"><span class="act">숙소 복귀 (야식)</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">22:00</td>
-      <td class="td-content"><span class="act">자유시간 및 취침</span></td>
-      <td class="td-cost"></td>
-    </tr>
-  </tbody>
-</table>
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
 
-<div class="route-line">숙소(쿠조) → <strong>마이몬 초밥</strong> 지하철 10분 → <strong>GU</strong> 도보 7분 → <strong>이온몰</strong> 도보 10분 → 숙소</div>
+  const places = [
+    { n: '숙', name: '숙소 (사쿠라 테라스)', lat: 34.9783, lng: 135.7585, cls: 'home', dir: 'right' },
+    { n: 1,   name: '교토역 · Porta 초밥',    lat: 34.9859, lng: 135.7585, cls: 'd1',   dir: 'right' },
+    { n: 2,   name: 'AEON 몰 · GU',          lat: 34.9834, lng: 135.7580, cls: 'd1',   dir: 'left'  },
+    { n: 3,   name: '기요미즈데라',           lat: 34.9949, lng: 135.7851, cls: 'd2',   dir: 'right' },
+    { n: 4,   name: '행자교 (기온)',          lat: 35.0037, lng: 135.7778, cls: 'd2',   dir: 'top'   },
+    { n: 5,   name: '돈키호테 アバンティ',       lat: 34.9847, lng: 135.7603, cls: 'd2',   dir: 'right' },
+    { n: 6,   name: '니시키 시장',            lat: 35.0050, lng: 135.7648, cls: 'd2',   dir: 'left'  }
+  ];
 
+  const offsets = { right: [18, 0], left: [-18, 0], top: [0, -18], bottom: [0, 18] };
+  const bounds = L.latLngBounds([]);
 
-<!-- ━━━ DAY 2 ━━━ -->
-<hr class="day-rule" style="margin-top:3rem; margin-bottom:2.2rem;">
+  places.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="num-marker ${p.cls}">${p.n}</div>`,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    });
+    L.marker([p.lat, p.lng], { icon }).addTo(map).bindTooltip(p.name, {
+      permanent: true,
+      direction: p.dir,
+      offset: offsets[p.dir],
+      className: 'kyoto-tooltip'
+    });
+    bounds.extend([p.lat, p.lng]);
+  });
 
-<div class="day-head">
-  <h2>4월 18일 <span class="dow">토요일</span></h2>
-  <span class="route">교토 종일</span>
-</div>
-<div class="day-sub">교통비 4,680엔</div>
+  // 1일차 저녁 동선: 교토역 → 이온몰 → 숙소
+  L.polyline([
+    [34.9859, 135.7585],
+    [34.9834, 135.7580],
+    [34.9783, 135.7585]
+  ], { color: '#b5683c', weight: 3.5, opacity: 0.8 }).addTo(map);
 
-<table class="sched">
-  <tbody>
-    <tr class="time-label time-label-first"><td colspan="3">오전 — 히가시야마</td></tr>
-    <tr class="has-detail">
-      <td class="td-time">05:30</td>
-      <td class="td-content">
-        <span class="act">기상</span>
-        <div class="move">숙소 → 기요미즈데라, 택시 20분</div>
-      </td>
-      <td class="td-cost">2,000엔</td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">07:00</td>
-      <td class="td-content">
-        <span class="act">기요미즈데라 관광</span>
-        <div class="desc">행자교로 걸어가면서 근처 관광지 살살 보면서 가도 됨</div>
-        <div class="move">기요미즈데라 → 행자교, 도보 30분</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">09:00</td>
-      <td class="td-content">
-        <span class="act">행자교 관광</span>
-        <div class="move">행자교 → 밥집, 도보 2분</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">11:00</td>
-      <td class="td-content">
-        <span class="act">식사 및 카페 휴식</span>
-        <div class="desc">일본 가정식, Kyo Umaimonoya Sakura</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
+  // 2일차 동선: 숙소 → 기요미즈데라 → 행자교 → 돈키호테(아반티) → 숙소 휴식 → 니시키 → 숙소
+  L.polyline([
+    [34.9783, 135.7585],
+    [34.9949, 135.7851],
+    [35.0037, 135.7778],
+    [34.9847, 135.7603],
+    [34.9783, 135.7585],
+    [35.0050, 135.7648],
+    [34.9783, 135.7585]
+  ], { color: '#44584c', weight: 3.5, opacity: 0.75 }).addTo(map);
 
-    <tr class="time-label"><td colspan="3">오후</td></tr>
-    <tr class="has-detail">
-      <td class="td-time">14:00</td>
-      <td class="td-content">
-        <span class="act">돈키호테 쇼핑</span>
-        <div class="move">행자교 → 돈키호테, 버스 30분</div>
-      </td>
-      <td class="td-cost">920엔</td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">16:00</td>
-      <td class="td-content">
-        <span class="act">빵집 쇼핑, 숙소 복귀 휴식</span>
-        <div class="desc">교토역 근처 빵집</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
+  // 2일차 히가시야마 도보 구간 강조 (기요미즈데라 → 행자교)
+  L.polyline([
+    [34.9949, 135.7851],
+    [35.0037, 135.7778]
+  ], { color: '#2d3b33', weight: 2, opacity: 0.9, dashArray: '4,5' }).addTo(map);
 
-    <tr class="time-label"><td colspan="3">저녁</td></tr>
-    <tr class="has-detail">
-      <td class="td-time">17:30</td>
-      <td class="td-content">
-        <span class="act">니시키 시장 관광</span>
-        <div class="move">숙소 → 니시키 시장, 지하철 20분</div>
-      </td>
-      <td class="td-cost">880엔</td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">19:00</td>
-      <td class="td-content">
-        <span class="act">저녁 식사 — 장어 덮밥</span>
-        <div class="desc">쿄 우나와 본점</div>
-      </td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr class="has-detail">
-      <td class="td-time">20:30</td>
-      <td class="td-content">
-        <span class="act">다이소, 100엔샵 쇼핑</span>
-        <div class="move">니시키 → 숙소, 지하철 20분</div>
-      </td>
-      <td class="td-cost">880엔</td>
-    </tr>
-    <tr>
-      <td class="td-time">21:30</td>
-      <td class="td-content"><span class="act">야키토리, 쿠시카츠 + 맥주 한잔</span></td>
-      <td class="td-cost"></td>
-    </tr>
-    <tr>
-      <td class="td-time">23:00</td>
-      <td class="td-content"><span class="act">숙소 복귀 및 취침</span></td>
-      <td class="td-cost"></td>
-    </tr>
-  </tbody>
-</table>
+  map.fitBounds(bounds, { padding: [45, 95] });
+})();
 
-<div class="route-line">오전: 숙소(쿠조) → <strong>기요미즈데라</strong> 택시 20분 → <strong>행자교</strong> 도보 30분 → <strong>우마이모노야</strong> 도보 2분 → <strong>돈키호테</strong> 버스 30분 → 숙소</div>
-<div class="route-line">저녁: 숙소 → <strong>니시키 시장</strong> 지하철 20분 → <strong>우나와 본점</strong> → <strong>다이소</strong> → 숙소 지하철 20분</div>
+// 페이지 내비 스크롤 스파이
+(function () {
+  const links = Array.from(document.querySelectorAll('.page-nav a'));
+  const sections = links
+    .map(a => document.getElementById(a.dataset.target))
+    .filter(Boolean);
+  if (!sections.length || !('IntersectionObserver' in window)) return;
 
+  const setActive = (id) => {
+    links.forEach(a => a.classList.toggle('active', a.dataset.target === id));
+  };
 
-<!-- ━━━ DAY 3 ━━━ -->
-<div style="margin-top:2.2rem;">
-  <div class="day-head">
-    <h2>4월 19일 <span class="dow">일요일</span></h2>
-    <span class="route">교토 → 인천</span>
-  </div>
+  const observer = new IntersectionObserver((entries) => {
+    // 화면에 보이는 섹션 중 상단에 가장 가까운 것을 active로
+    const visible = entries
+      .filter(e => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible[0]) setActive(visible[0].target.id);
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
 
-  <table class="sched">
-    <tbody>
-      <tr>
-        <td class="td-time">08:30</td>
-        <td class="td-content"><span class="act">기상</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr class="has-detail">
-        <td class="td-time">09:30</td>
-        <td class="td-content"><span class="act">체크 아웃</span> <span class="desc">— 숙소 → 밥집, 도보 10분</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr class="has-detail">
-        <td class="td-time">10:00</td>
-        <td class="td-content">
-          <span class="act">나카우 — 가성비 밥집</span>
-          <div class="desc">Nakau, Kyoto Hachijo Entrance</div>
-        </td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">11:30</td>
-        <td class="td-content"><span class="act">하루카 공항 출발</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr class="has-detail">
-        <td class="td-time">12:50</td>
-        <td class="td-content"><span class="act">하루카 공항 도착</span> <span class="desc">— 식사 아무거나</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">15:05</td>
-        <td class="td-content"><span class="act">인천행 비행기 출발</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">17:05</td>
-        <td class="td-content"><span class="act">인천 비행기 도착</span></td>
-        <td class="td-cost"></td>
-      </tr>
-      <tr>
-        <td class="td-time">18:20</td>
-        <td class="td-content"><span class="act">집으로 가자잇!</span></td>
-        <td class="td-cost"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-<div class="total">
-  <span class="label">예상 교통비 합계</span>
-  <span class="amount">6,560엔</span>
-</div>
-
-<div class="footer">교토 가족여행 · 2026년 4월</div>
-
-</div>
-
+  sections.forEach(s => observer.observe(s));
+  setActive(sections[0].id);
+})();
+</script>
 </body>
 </html>
